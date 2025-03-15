@@ -133,11 +133,17 @@ OVERLAP = 5
 ## Reference
 
 [1]. LangChain https://github.com/langchain-ai/langchain
+
 [2]. 动手学习大模型 https://datawhalechina.github.io/llm-universe/#/ 
+
 [3]. LangChain 自定义 智谱 AI Embedding类 https://github.com/datawhalechina/llm-universe/blob/main/notebook/C3%20%E6%90%AD%E5%BB%BA%E7%9F%A5%E8%AF%86%E5%BA%93/zhipuai_embedding.py
+
 [4]. DeepSeek API 文档 https://api-docs.deepseek.com/zh-cn/
+
 [5]. 智谱大模型API Keys https://bigmodel.cn/usercenter/proj-mgmt/apikeys
+
 [6]. 面向法律场景的大模型 RAG 检索增强解决方案 https://developer.aliyun.com/article/1649317?spm=5176.2020520130.0.0.67bd697b9cRzjc&msctype=pmsg&mscareaid=cn&mscsiteid=cn&mscmsgid=7630125021100903556&yunge_info=pmsg___7630125021100903556&tlog=yuekan_2501
+
 [7]. Anaconda https://anaconda.org/anaconda/conda
 
 ## 联系作者
