@@ -17,8 +17,8 @@ if __name__ == '__main__':
     # Vectordb
     DATA_DIR = "./law_data"
     PERSIST_DIR = "./chroma"
-    CHUNK_SIZE = 20
-    OVERLAP = 5
+    CHUNK_SIZE = 50
+    OVERLAP = 10
 
     llm = BaseChatOpenAI(
         model='deepseek-chat',
@@ -36,8 +36,8 @@ if __name__ == '__main__':
     output_parser = StrOutputParser()
 
     template = """你是一名法官，可以帮助我审判法律案件。你得到法律库:
-     {context}
-     问题：{question}
+    {context}
+    问题：{question}
     """
     prompt = ChatPromptTemplate.from_template(template)
 
@@ -47,8 +47,7 @@ if __name__ == '__main__':
 
     rag_chain = setup_and_retrieval | prompt | llm | output_parser
 
-    questions = ["根据未成年人保护法，在学校幼儿园和其他未成年人集中活动的公共场所吸烟饮酒应该受到什么处罚？",
-                 "2024年，某市某体育公司举办大型体育活动，有上千名群众参加，因为天气恶劣，主办方没有做好安全工作导致超过20名群众死亡，根据刑法，其主管人员犯了什么罪，将会受到何种刑事处罚，刑期如何？"]
+    questions = ["赵某为某市小学教师。在执教期间，曾有学生家长于2019年1月以赵某非礼其女儿为由向学校举报，赵某因此写下书面检讨，保证不再发生此类事件。然而，2019年1月至2022年6月以来，赵某利用教学之便，在课间活动及补课期间，多次对5名女学生进行猥亵。你作为法官审理该案件，该如何审判？"]
 
     for q in questions:
         print("*" * 50)

@@ -14,30 +14,6 @@ class LawVectordb:
         self.overlap = overlap
 
     def makeVectordb(self):
-        loaders = []
-        paths = os.listdir(self.data_directory)
-        for path in paths:
-            relative_path = os.path.join(self.data_directory, path)
-            file_type = path.split(".")[-1]
-            if file_type == "pdf":
-                loaders.append(PyMuPDFLoader(relative_path))
-            elif file_type == "md":
-                loaders.append(UnstructuredMarkdownLoader(relative_path))
-        # Document 文件没有做格式化
-        # TODO 删除\n
-        texts = []
-        for loader in loaders:
-            pdf_documents = loader.load()
-            texts.extend(pdf_documents)
-
-        text_splitter = RecursiveCharacterTextSplitter(
-            chunk_size=self.chunk_size,
-            chunk_overlap=self.overlap,
-        )
-
-        split_docs = text_splitter.split_documents(texts)
-
-
         embedding = ZhipuAIEmbeddings()
 
         if os.listdir(self.persist_directory):
@@ -47,13 +23,36 @@ class LawVectordb:
                 persist_directory=self.persist_directory
             )
         else:
+            loaders = []
+            paths = os.listdir(self.data_directory)
+            for path in paths:
+                relative_path = os.path.join(self.data_directory, path)
+                file_type = path.split(".")[-1]
+                if file_type == "pdf":
+                    loaders.append(PyMuPDFLoader(relative_path))
+                elif file_type == "md":
+                    loaders.append(UnstructuredMarkdownLoader(relative_path))
+            texts = []
+            for loader in loaders:
+                pdf_documents = loader.load()
+                for page in pdf_documents:
+                    page.page_content = page.page_content.replace("\n", "")
+                print(pdf_documents)
+                texts.extend(pdf_documents)
+
+            text_splitter = RecursiveCharacterTextSplitter(
+                chunk_size=self.chunk_size,
+                chunk_overlap=self.overlap,
+            )
+
+            split_docs = text_splitter.split_documents(texts)
+
             # 加载文档到chrome向量库中，并持久化，vectordb = persist + docs
             vectordb = Chroma.from_documents(
                 documents=split_docs,
                 embedding=embedding,
                 persist_directory=self.persist_directory
             )
-
         return vectordb
 
     def reloadVectordb(self, chunk_size=50, overlap=10):
